@@ -9,11 +9,11 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
 let map = null;
 let marker = null;
-let weatherKey = "d593d7aa907ffa291667e5c7bbbd30e3";
+let weatherKey = process.env.WEATHERSTACK_API_KEY;
 function HomeContainer() {
   const mapElement = useRef(null);
-  Mapbox.accessToken =
-    "pk.eyJ1Ijoic2FuZGVybmwiLCJhIjoiY2trZWdsZXh6MDgxODJ1bjd2eHhrZHBpNiJ9.CfglP1yR5fWs8mOyh8k46w";
+  Mapbox.accessToken = process.env.MAPBOX_API_KEY;
+    
 
   const [style, setStyle] = useState(
     "mapbox://styles/sandernl/ckkxyzmis0jua17qidgsr1fu7"
@@ -28,8 +28,8 @@ function HomeContainer() {
   useEffect(() => {
     const client = new Cosmic();
     const bucket = client.bucket({
-      slug: "tema5",
-      read_key: "0pKDyFMshq2gpPlTOtFUF9ZZL1HuHGJo9Qqqqj7wS8fnXbTvBN",
+      slug: process.env.BUCKET_SLUG,
+      read_key: process.env.READ_KEY,
     });
 
     bucket
@@ -72,7 +72,7 @@ function HomeContainer() {
       map.addControl(
         new MapboxGeocoder({
           accessToken:
-            "pk.eyJ1Ijoic2FuZGVybmwiLCJhIjoiY2trZWdsZXh6MDgxODJ1bjd2eHhrZHBpNiJ9.CfglP1yR5fWs8mOyh8k46w", // mapboxgl.accessToken,
+            process.env.MAPBOX_API_KEY, // mapboxgl.accessToken,
           mapboxgl: Mapbox,
         })
       );
@@ -123,7 +123,7 @@ function HomeContainer() {
           setStop(stopToPass);
           map.flyTo({
             center: [item.metadata.longitude, item.metadata.latitude],
-            zoom: 9,
+            zoom: 4,
           });
           setVisualization(country);
         });
@@ -181,9 +181,9 @@ function HomeContainer() {
           new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              labels: ["Jan", "Feb", "Mars", "April", "Mai", "Juni", "Juli", "Aug", "Sep", "Oct", "Nov", "Des"],
               datasets: [{
-                label: 'COVID Deaths in 2020',
+                label: 'COVID Dødsfall i 2020',
                 data: data,
                 backgroundColor: [
                   'rgba(255, 99, 132, 0.2)'
@@ -274,7 +274,7 @@ function HomeContainer() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-rapidapi-key": "c7206103cbmsh392e44a6e5c45c4p1d59c0jsnd49d079b6d85",
+        "x-rapidapi-key": process.env.RAPID_API_KEY,
         "x-rapidapi-host": "covid-193.p.rapidapi.com",
         useQueryString: true,
       },
@@ -326,5 +326,7 @@ function HomeContainer() {
   }
   return <>{pageData === null ? renderSkeleton() : renderPage()}</>;
 }
+
+
 
 export default HomeContainer;

@@ -1,8 +1,0 @@
-Changes done are below
-----------------------
-1. Moved the template.html(? code to information component in React way)
-2. Integrated with Rapid API to get the covid data
-3. Using slug attribute of stops to fetch the covid data
-4. Process the covid response to map it to bar chart
-5. Included a chartJS library
-6. Changes related to responsiveness

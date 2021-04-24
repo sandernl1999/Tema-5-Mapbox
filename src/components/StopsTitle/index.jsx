@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const UnderverkTitle = styled.h2`
+const StopsTitle = styled.h2`
     background-color: aliceblue;
     font-size: 1rem; 
     font-weight: 700;
@@ -8,4 +8,4 @@ const UnderverkTitle = styled.h2`
     margin-right: auto;
 `
 
-export default UnderverkTitle; 
+export default StopsTitle; 

@@ -4,7 +4,7 @@ import PageTitle from '../../components/PageTitle';
 import HomeContainer from '../HomeContainer';
 import Container from '../../components/Container';
 
-const UnderverkContainer = () => {
+const StopsContainer = () => {
 
     const [pageData, setPageData] = useState(null); 
 
@@ -61,4 +61,4 @@ const UnderverkContainer = () => {
       )
 }
 
-export default UnderverkContainer;
+export default StopsContainer;

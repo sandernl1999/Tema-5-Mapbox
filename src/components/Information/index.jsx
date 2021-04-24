@@ -15,9 +15,9 @@ function Information() {
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span tabIndex="1" class="close" onClick={openModal}>&times;</span>
-                        <p>On this map you find the 7 new wonders of the world + our school!</p>
+                        <p>På dette kartet finner du verdens syv nye underverker + skolen vår</p>
                         <p></p>
-                        <p>Click, scroll and navigate through the map!</p>
+                        <p>Klikk, scroll og naviger deg rundt på kartet!</p>
                     </div>
                 </div> 
             }            
