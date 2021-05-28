@@ -4,4 +4,3 @@ node_modules
 *.log
 build
 .development.env
-.production.env
