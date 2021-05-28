@@ -9,7 +9,7 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
 let map = null;
 let marker = null;
-let weatherKey = process.env.WEATHERSTACK_API_KEY;
+let weatherKey = process.VERCEL_ENV.WEATHERSTACK_API_KEY;
 function HomeContainer() {
   const mapElement = useRef(null);
   Mapbox.accessToken = process.env.MAPBOX_API_KEY;
@@ -28,8 +28,8 @@ function HomeContainer() {
   useEffect(() => {
     const client = new Cosmic();
     const bucket = client.bucket({
-      slug: process.env.BUCKET_SLUG,
-      read_key: process.env.READ_KEY,
+      slug: process.VERCEL_ENV.BUCKET_SLUG,
+      read_key: process.VERCEL_ENV.READ_KEY,
     });
 
     bucket
@@ -71,7 +71,7 @@ function HomeContainer() {
       map.addControl(new Mapbox.NavigationControl(), "bottom-right");
       map.addControl(
         new MapboxGeocoder({
-          accessToken: process.env.MAPBOX_API_KEY, // mapboxgl.accessToken,
+          accessToken: process.VERCEL_ENV.MAPBOX_API_KEY, // mapboxgl.accessToken,
           mapboxgl: Mapbox,
         })
       );
@@ -328,7 +328,7 @@ function HomeContainer() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-rapidapi-key": process.env.RAPID_API_KEY,
+        "x-rapidapi-key": process.VERCEL_ENV.RAPID_API_KEY,
         "x-rapidapi-host": "covid-193.p.rapidapi.com",
         useQueryString: true,
       },

@@ -14,8 +14,8 @@ const StopsContainer = () => {
 
     const client = new Cosmic();
     const bucket = client.bucket({
-      slug: process.env.BUCKET_SLUG,
-      read_key: process.env.READ_KEY,
+      slug: process.VERCEL_ENV.BUCKET_SLUG,
+      read_key: process.VERCEL_ENV.READ_KEY,
     });
 
     bucket
