@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
-    .klima{
+    .weather{
         font-size:10px;
         grid-template-columns: repeat(3, 1fr);
         font-weight: 500;
@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
             font-size:12px;
         }
 
-        .klima-img{
+        .weather-img{
             border-radius: 70%;
             width: 4em;
         }
@@ -49,11 +49,11 @@ const GlobalStyle = createGlobalStyle`
         font-family: "Georgia", sans-serif; 
     }
 
-    .min-destinasjon{
+    .my-destination{
         cursor:pointer;
     }    
 
-    .popup-destinasjon{
+    .popup-destination{
         height: 500px;
         width: 500px;
         font-family: 'Georgia', sans-serif;
@@ -136,7 +136,7 @@ const GlobalStyle = createGlobalStyle`
             height: 400px;
             width: 420px;     
         }
-        .popup-destinasjon{
+        .popup-destination{
             height: 400px;
             width: 400px;     
         }
@@ -155,7 +155,7 @@ const GlobalStyle = createGlobalStyle`
             width: 370px;     
             left: -175px;
         }
-        .popup-destinasjon{
+        .popup-destination{
             height: 350px;
             width: 350px;     
         }
@@ -274,6 +274,6 @@ const GlobalStyle = createGlobalStyle`
         left: 0.2em;
       }
     }
-`
+`;
 
-export default GlobalStyle; 
+export default GlobalStyle;
