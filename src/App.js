@@ -20,6 +20,10 @@ function App() {
 
     document.body.appendChild(script);
     console.log("APP STARTED");
+    console.log("MAPBOX VAR", process.env.MAPBOX_API_KEY);
+    console.log("KAMAL VAR", process.env.KAMAL_VAR);
+
+
   })
 
   return (
