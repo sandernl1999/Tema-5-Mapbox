@@ -16,7 +16,7 @@ function Information() {
   return (
     <div>
       <label>
-        <button id="myBtn" onClick={openModal} aria-haspopup="true">
+        <button id="myBtn" onClick={openModal} aria-haspopup="dialog">
           ?
         </button>
       </label>
@@ -24,10 +24,10 @@ function Information() {
         <div
           id="myModal"
           class="modal"
-          role="dialog"
+          role="alert"
           tabIndex="0"
           aria-labelledby="dialog1_label"
-          aria-modal="true"
+          aria-modal="false"
         >
           <div class="modal-content">
             <button
