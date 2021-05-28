@@ -140,7 +140,7 @@ function HomeContainer() {
 
         let popUpCard = `
 					<div class="popup-destination">
-          <button id="demo">Ahmed</button>
+            <button id="demo">x</button>
             <h2>${item.title}</h2>
             <p>${item.content}</p>
             <img class="item-img" src=${item.metadata.infoimage.imgix_url} alt=${item.metadata.infoimagealt}>
@@ -156,7 +156,7 @@ function HomeContainer() {
             </div>       
           </div>`;
 
-        let popUp = new Mapbox.Popup();
+        let popUp = new Mapbox.Popup({ closeButton: false });
         popUp.setHTML(popUpCard);
 
         new Mapbox.Marker(el, {
@@ -183,29 +183,33 @@ function HomeContainer() {
     console.log("deaths", currentData);
 
     if (!currentData[country]) return;
+
     setTimeout(() => {
-      const ctx = document.getElementById("chart");
-      // if (document.getElementsByClassName("mapboxgl-popup-close-button")) {
-      //   let yoEl = document.getElementsByClassName(
-      //     "mapboxgl-popup-close-button"
-      //   );
-      //   console.log("yoEl===>", yoEl);
-      //   yoEl[0].style.backgroundColor = "green";
-      //   yoEl.onclick = () => console.log("clicked");
-      // }
       if (document.getElementById("demo")) {
         let yoEl = document.getElementById("demo");
         console.log("yoEl found===>", yoEl);
-        yoEl.style.backgroundColor = "green";
+        console.log(
+          "The parent of found yoEl",
+          yoEl.parentElement.parentElement.parentElement
+        );
+        const popUPEl = yoEl.parentElement.parentElement.parentElement;
+
         yoEl.onclick = function () {
+          popUPEl.remove();
+
           map.flyTo({
-            center: [-23.3, 24.3],
-            zoom: 4,
+            center: [10.381198, 28.748947],
+            zoom: 1.5,
           });
           map.click();
           console.log("Click found");
         };
       }
+    }, 500);
+
+    setTimeout(() => {
+      const ctx = document.getElementById("chart");
+
       const data = getBarData(currentData[country]);
       new Chart(ctx, {
         type: "bar",

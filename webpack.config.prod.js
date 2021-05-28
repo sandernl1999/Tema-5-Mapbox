@@ -1,37 +1,35 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpack = require("webpack");
+const Dotenv = require("dotenv-webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = () => {
   return {
-    mode: 'production',
+    mode: "production",
     entry: {
-      index: './src/index.js'
+      index: "./src/index.js",
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     plugins: [
       new Dotenv({
-        path: './.production.env'
+        path: "./.production.env",
       }),
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: './src/template.html',
-        title: 'Produksjon'
+        filename: "index.html",
+        template: "./src/template.html",
+        title: "Produksjon",
       }),
       new CopyPlugin({
-        patterns: [
-          {from: './other', noErrorOnMissing: true}
-        ],
-      })
+        patterns: [{ from: "./other", noErrorOnMissing: true }],
+      }),
     ],
     output: {
-      filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'build'),
-      publicPath: '/'
+      filename: "[name].bundle.js",
+      path: path.resolve(__dirname, "public"),
+      publicPath: "/",
     },
     module: {
       rules: [
@@ -39,20 +37,20 @@ module.exports = () => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              plugins: ['@babel/plugin-transform-runtime']
-            }
-          }
+              plugins: ["@babel/plugin-transform-runtime"],
+            },
+          },
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
-        }
+          type: "asset/resource",
+        },
       ],
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx']
-    }
+      extensions: ["*", ".js", ".jsx"],
+    },
   };
 };

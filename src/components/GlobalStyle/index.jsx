@@ -89,6 +89,21 @@ const GlobalStyle = createGlobalStyle`
         position: absolute;
         top: -140px;
     }
+
+    #demo {
+      font-size: 22px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      border: 0;
+      border-radius: 0 3px 0 0;
+      cursor: pointer;
+      background-color: transparent;
+    }
+
+    #demo:hover{
+      background-color: rgba(0,0,0,.05);
+    }
     .mapboxgl-popup-close-button {
         font-size: 22px;
     }
