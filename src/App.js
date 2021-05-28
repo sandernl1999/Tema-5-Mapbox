@@ -19,6 +19,7 @@ function App() {
     script.async = true;
 
     document.body.appendChild(script);
+    console.log("APP STARTED");
   })
 
   return (
