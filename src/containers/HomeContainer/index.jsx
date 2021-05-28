@@ -282,7 +282,7 @@ function HomeContainer() {
     console.log(mapMarkersState);
     mapMarkersState.map((i) => {
       fetch(
-        `http://api.weatherstack.com/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
+        `https://api.weatherstack.com/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
       )
         .then((response) => response.json())
         .then((data) => {
