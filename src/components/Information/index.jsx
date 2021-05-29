@@ -16,7 +16,7 @@ function Information() {
   return (
     <div>
       <label>
-        <button id="myBtn" onClick={openModal} aria-haspopup="dialog">
+        <button id="myBtn" onClick={openModal} aria-haspopup="true">
           ?
         </button>
       </label>
@@ -24,17 +24,17 @@ function Information() {
         <div
           id="myModal"
           class="modal"
-          role="alert"
+          role="dialog"
           tabIndex="0"
           aria-labelledby="dialog1_label"
-          aria-modal="false"
+          aria-describedby="dialog1_label2"
         >
           <div class="modal-content">
             <button
               class="close"
               onClick={openModal}
               onKeyPress={(e) => keyPressHandler(e)}
-              aria-label="close dialog button"
+              aria-label="close dialog"
             >
               &times;
             </button>
@@ -42,7 +42,9 @@ function Information() {
               På dette kartet finner du verdens syv nye underverker + skolen vår
             </p>
             <p></p>
-            <p>Klikk, scroll og naviger deg rundt på kartet!</p>
+            <p id="dialog1_label2">
+              Klikk, scroll og naviger deg rundt på kartet!
+            </p>
           </div>
         </div>
       )}

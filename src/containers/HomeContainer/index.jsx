@@ -92,6 +92,9 @@ function HomeContainer() {
         el.className = "my-destination";
         el.setAttribute("data-name", `${item.title}`);
         el.setAttribute("stop-country", `${item.slug}`);
+        el.setAttribute("aria-label", `${item.title}`);
+        el.setAttribute("role", `button`);
+        el.setAttribute("aria-haspopup", `${true}`);
         el.style.display = "block";
         el.style.height = "50px";
         el.style.width = "50px";
@@ -125,9 +128,9 @@ function HomeContainer() {
         var weather = weatherData.filter((p) => p.slug === item.slug)[0];
 
         let popUpCard = `
-					<div class="popup-destination">
+					<div class="popup-destination" role="dialog" aria-labelledby="popup-item-title">
             <button id="popup-destination-close-button" aria-label="close dialog">x</button>
-            <h2>${item.title}</h2>
+            <h2 id="popup-item-title">${item.title}</h2>
             <p>${item.content}</p>
             <img class="item-img" src=${item.metadata.infoimage.imgix_url} alt=${item.metadata.infoimagealt}>
             <h3>Værmelding (${weather?.location?.name})</h3>
