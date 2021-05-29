@@ -15,7 +15,8 @@ module.exports = () => {
     plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-         'AHMED_VAR': '123456'
+         'AHMED_VAR': '123456',
+         'KAMAL_VAR': JSON.stringify(process.env.KAMAL_VAR)
       }
     }),
       new CleanWebpackPlugin(),
