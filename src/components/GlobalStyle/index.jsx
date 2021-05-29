@@ -90,7 +90,7 @@ const GlobalStyle = createGlobalStyle`
         top: -140px;
     }
 
-    #demo {
+    #popup-destination-close-button {
       font-size: 22px;
       position: absolute;
       right: 0;
@@ -101,7 +101,7 @@ const GlobalStyle = createGlobalStyle`
       background-color: transparent;
     }
 
-    #demo:hover{
+    #popup-destination-close-button:hover{
       background-color: rgba(0,0,0,.05);
     }
     .mapboxgl-popup-close-button {

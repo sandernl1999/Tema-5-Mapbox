@@ -1,7 +1,6 @@
 import processCovidData from "./processCovidData";
 
 export default function getCovidData(country) {
-  console.log("RUNNING getCovidData");
   fetch(`https://covid-193.p.rapidapi.com/history?country=${country}`, {
     method: "GET",
     headers: {

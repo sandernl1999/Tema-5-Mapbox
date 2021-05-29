@@ -11,7 +11,6 @@ import setWeatherToPopup from "../../utils/setWeatherToPopup";
 import setVisualization from "../../utils/setVisualization";
 
 let map = null;
-let marker = null;
 let weatherKey = process.env.WEATHERSTACK_API_KEY;
 function HomeContainer() {
   const mapElement = useRef(null);
@@ -21,10 +20,8 @@ function HomeContainer() {
     "mapbox://styles/sandernl/ckkxyzmis0jua17qidgsr1fu7"
   );
   const [mapMarkersState, setMapMarkersState] = useState([]);
-  const [infoContent, setInfoContent] = useState(null);
-  const [stop, setStop] = useState(null);
+
   const [pageData, setPageData] = useState(null);
-  const [weatherData, setWeatherData] = useState([]);
   const [isWeatherData, setIsWeatherData] = useState(false);
 
   // Loads Data from Cosmicjs
@@ -43,7 +40,6 @@ function HomeContainer() {
 
       .then((data) => {
         setPageData(data.object);
-        console.log("Page Data from Cosmic", data);
       })
       .catch((error) => {});
 
@@ -55,7 +51,6 @@ function HomeContainer() {
 
       .then((data) => {
         setMapMarkersState(data.objects);
-        console.log("Marker Data from Cosmic", data.objects);
       })
       .catch((error) => {
         console.log(error);
@@ -82,9 +77,7 @@ function HomeContainer() {
   }, [pageData]);
 
   // Create Markers on the map
-
   useEffect(() => {
-    console.log("useEffect MapMarker IsWhetherData.... ", isWeatherData);
     if (
       !mapMarkersState ||
       !map ||
@@ -110,11 +103,6 @@ function HomeContainer() {
           if (event.key !== "Enter") return;
           let selectedStop = el.getAttribute("data-name");
           let country = el.getAttribute("stop-country");
-          let stopToPass = mapMarkersState.find(
-            (el) => el.title === selectedStop
-          );
-          console.log(selectedStop);
-          setStop(stopToPass);
           map.flyTo({
             center: [item.metadata.longitude, item.metadata.latitude],
             zoom: 4,
@@ -126,11 +114,6 @@ function HomeContainer() {
         el.addEventListener("click", function () {
           let selectedStop = el.getAttribute("data-name");
           let country = el.getAttribute("stop-country");
-          let stopToPass = mapMarkersState.find(
-            (el) => el.title === selectedStop
-          );
-          console.log(selectedStop);
-          setStop(stopToPass);
           map.flyTo({
             center: [item.metadata.longitude, item.metadata.latitude],
             zoom: 4,
@@ -138,14 +121,12 @@ function HomeContainer() {
           setVisualization(country, map);
         });
 
-        setInfoContent(item.content);
-
         const weatherData = JSON.parse(sessionStorage.getItem("WEATHER-DATA"));
         var weather = weatherData.filter((p) => p.slug === item.slug)[0];
 
         let popUpCard = `
 					<div class="popup-destination">
-            <button id="demo">x</button>
+            <button id="popup-destination-close-button" aria-label="close dialog">x</button>
             <h2>${item.title}</h2>
             <p>${item.content}</p>
             <img class="item-img" src=${item.metadata.infoimage.imgix_url} alt=${item.metadata.infoimagealt}>
@@ -174,16 +155,15 @@ function HomeContainer() {
     }
   }, [mapMarkersState, isWeatherData]);
 
-  // Original Fetch Weather Data
+  //  Fetch Weather Data
   useEffect(() => {
     //
     if (!mapMarkersState) {
       return;
     }
-    console.log(mapMarkersState);
     mapMarkersState.map((i) => {
       fetch(
-        `http://api.weatherstack.com/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
+        `${process.env.WEATHER_API_URL}/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -193,7 +173,6 @@ function HomeContainer() {
               sessionStorage.getItem("WEATHER-DATA")
             );
             currentData.push(data);
-            console.log("currrentData", currentData.length);
             sessionStorage.setItem("WEATHER-DATA", JSON.stringify(currentData));
             if (currentData.length >= 8) {
               setIsWeatherData(true);
@@ -204,10 +183,7 @@ function HomeContainer() {
         });
       getCovidData(i.slug);
     });
-    if (sessionStorage.getItem("COVID-DATA")) {
-      console.log("Accessing Covid data from fetch weather useeffect");
-    }
-  }, [mapMarkersState, sessionStorage]);
+  }, [mapMarkersState]);
 
   // Trying Fetch Weather Data
 

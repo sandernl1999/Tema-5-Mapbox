@@ -22,6 +22,7 @@ module.exports = () => {
           WEATHERSTACK_API_KEY: JSON.stringify(
             process.env.WEATHERSTACK_API_KEY
           ),
+          WEATHER_API_URL: JSON.stringify(process.env.WEATHER_API_URL),
         },
       }),
       new CleanWebpackPlugin(),

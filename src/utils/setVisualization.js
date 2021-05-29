@@ -3,36 +3,32 @@ import getBarData from "./getBarData";
 export default function setVisualization(country, map) {
   let currentData = sessionStorage.getItem("COVID-DATA");
   currentData = !currentData ? {} : JSON.parse(currentData);
-  console.log("deaths", currentData);
 
   if (!currentData[country]) return;
 
   setTimeout(() => {
-    if (document.getElementById("demo")) {
-      let yoEl = document.getElementById("demo");
-      console.log("yoEl found===>", yoEl);
-      console.log(
-        "The parent of found yoEl",
-        yoEl.parentElement.parentElement.parentElement
+    if (document.getElementById("popup-destination-close-button")) {
+      let popUpCloseButton = document.getElementById(
+        "popup-destination-close-button"
       );
-      const popUPEl = yoEl.parentElement.parentElement.parentElement;
 
-      yoEl.onclick = function () {
-        popUPEl.remove();
+      const popUpElement =
+        popUpCloseButton.parentElement.parentElement.parentElement;
+
+      popUpCloseButton.onclick = function () {
+        popUpElement.remove();
 
         map.flyTo({
           center: [10.381198, 28.748947],
           zoom: 1.5,
         });
         map.click();
-        console.log("Click found");
       };
     }
-  }, 500);
+  }, 1000);
 
   setTimeout(() => {
     const ctx = document.getElementById("chart");
-
     const data = getBarData(currentData[country]);
     new Chart(ctx, {
       type: "bar",
