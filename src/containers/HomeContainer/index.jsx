@@ -6,6 +6,9 @@ import HomeContent from "../../components/HomeContent";
 import PageTitle from "../../components/PageTitle";
 import Container from "../../components/Container";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import getCovidData from "../../utils/getCovidData";
+import setWeatherToPopup from "../../utils/setWeatherToPopup";
+import setVisualization from "../../utils/setVisualization";
 
 let map = null;
 let marker = null;
@@ -24,7 +27,7 @@ function HomeContainer() {
   const [weatherData, setWeatherData] = useState([]);
   const [isWeatherData, setIsWeatherData] = useState(false);
 
-  // Cosmicjs
+  // Loads Data from Cosmicjs
   useEffect(() => {
     const client = new Cosmic();
     const bucket = client.bucket({
@@ -59,7 +62,7 @@ function HomeContainer() {
       });
   }, []);
 
-  //
+  // Creates a Map
   useEffect(() => {
     if (pageData !== null) {
       map = new Mapbox.Map({
@@ -77,6 +80,8 @@ function HomeContainer() {
       );
     }
   }, [pageData]);
+
+  // Create Markers on the map
 
   useEffect(() => {
     console.log("useEffect MapMarker IsWhetherData.... ", isWeatherData);
@@ -169,111 +174,7 @@ function HomeContainer() {
     }
   }, [mapMarkersState, isWeatherData]);
 
-  function getBarData(covidDeathsData) {
-    const barData = [];
-    for (let i = 0; i < 12; i++) {
-      barData[i] = covidDeathsData[i] ? covidDeathsData[i] : 0;
-    }
-    return barData;
-  }
-
-  function setVisualization(country, map) {
-    let currentData = sessionStorage.getItem("COVID-DATA");
-    currentData = !currentData ? {} : JSON.parse(currentData);
-    console.log("deaths", currentData);
-
-    if (!currentData[country]) return;
-
-    setTimeout(() => {
-      if (document.getElementById("demo")) {
-        let yoEl = document.getElementById("demo");
-        console.log("yoEl found===>", yoEl);
-        console.log(
-          "The parent of found yoEl",
-          yoEl.parentElement.parentElement.parentElement
-        );
-        const popUPEl = yoEl.parentElement.parentElement.parentElement;
-
-        yoEl.onclick = function () {
-          popUPEl.remove();
-
-          map.flyTo({
-            center: [10.381198, 28.748947],
-            zoom: 1.5,
-          });
-          map.click();
-          console.log("Click found");
-        };
-      }
-    }, 500);
-
-    setTimeout(() => {
-      const ctx = document.getElementById("chart");
-
-      const data = getBarData(currentData[country]);
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: [
-            "Jan",
-            "Feb",
-            "Mars",
-            "April",
-            "Mai",
-            "Juni",
-            "Juli",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Des",
-          ],
-          datasets: [
-            {
-              label: "COVID Dødsfall i 2020",
-              data: data,
-              backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-              borderColor: ["rgba(255, 99, 132, 0.2)"],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: false,
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  maxRotation: 90,
-                  minRotation: 80,
-                },
-                gridLines: {
-                  offsetGridLines: true,
-                },
-              },
-              {
-                position: "top",
-                ticks: {
-                  maxRotation: 90,
-                  minRotation: 80,
-                },
-                gridLines: {
-                  offsetGridLines: true,
-                },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        },
-      });
-    }, 1000);
-  }
+  // Original Fetch Weather Data
   useEffect(() => {
     //
     if (!mapMarkersState) {
@@ -282,7 +183,7 @@ function HomeContainer() {
     console.log(mapMarkersState);
     mapMarkersState.map((i) => {
       fetch(
-        `https://api.weatherstack.com/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
+        `http://api.weatherstack.com/forecast?access_key=${weatherKey}&query=${i.metadata.weatherquery}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -303,7 +204,12 @@ function HomeContainer() {
         });
       getCovidData(i.slug);
     });
-  }, [mapMarkersState]);
+    if (sessionStorage.getItem("COVID-DATA")) {
+      console.log("Accessing Covid data from fetch weather useeffect");
+    }
+  }, [mapMarkersState, sessionStorage]);
+
+  // Trying Fetch Weather Data
 
   function renderSkeleton() {
     return <SkeletonContainer />;
@@ -323,71 +229,6 @@ function HomeContainer() {
     );
   }
 
-  function getCovidData(country) {
-    fetch(`https://covid-193.p.rapidapi.com/history?country=${country}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-rapidapi-key": process.env.RAPID_API_KEY,
-        "x-rapidapi-host": "covid-193.p.rapidapi.com",
-        useQueryString: true,
-      },
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => processCovidData(result.response, country),
-        (error) => console.log("COVID", error)
-      );
-  }
-
-  function setWeatherToPopup(country) {
-    const weatherData = JSON.parse(sessionStorage.getItem("WEATHER-DATA"));
-    const weather = weatherData.filter((p) => p.slug === country)[0];
-    setTimeout(() => {
-      document.getElementById(
-        `${country}-stop-temperature`
-      ).innerHTML = `${weather?.current?.temperature}°c`;
-      document.getElementById(
-        `${country}-stop-weather-icon`
-      ).innerHTML = `${weather?.current?.weather_icons}`;
-      document.getElementById(
-        `${country}-stop-weather-desc`
-      ).innerHTML = `${weather?.current?.weather_descriptions}`;
-    }, 1000);
-  }
-
-  function processCovidData(result, country) {
-    if (!result || result.length === 0) return;
-    const formattedData = result.reduce((accumulator, data) => {
-      const date = new Date(data.day);
-      if (date.getFullYear() !== 2020) return accumulator;
-      const newDeaths = data.deaths.new
-        ? parseInt(data.deaths.new.replace("+", ""))
-        : 0;
-      if (accumulator[data.day] && newDeaths > accumulator[data.day]) {
-        accumulator[data.day] = newDeaths;
-      } else if (!accumulator[data.day]) {
-        accumulator[data.day] = newDeaths;
-      }
-      return accumulator;
-    }, {});
-    const mappedResult = Object.keys(formattedData).reduce(
-      (accumulator, key) => {
-        const date = new Date(key);
-        if (accumulator[date.getMonth()]) {
-          accumulator[date.getMonth()] += formattedData[key];
-        } else if (!accumulator[date.getMonth()]) {
-          accumulator[date.getMonth()] = formattedData[key];
-        }
-        return accumulator;
-      },
-      {}
-    );
-    let currentData = sessionStorage.getItem("COVID-DATA");
-    currentData = !currentData ? {} : JSON.parse(currentData);
-    currentData = { ...currentData, [country]: mappedResult };
-    sessionStorage.setItem("COVID-DATA", JSON.stringify(currentData));
-  }
   return <>{pageData === null ? renderSkeleton() : renderPage()}</>;
 }
 

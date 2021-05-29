@@ -13,16 +13,17 @@ module.exports = () => {
     },
     devtool: "source-map",
     plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-         'MAPBOX_API_KEY': JSON.stringify(process.env.MAPBOX_API_KEY),
-         'BUCKET_SLUG': JSON.stringify(process.env.BUCKET_SLUG),
-         'READ_KEY': JSON.stringify(process.env.READ_KEY),
-         'RAPID_API_KEY': JSON.stringify(process.env.RAPID_API_KEY),
-         'WEATHERSTACK_API_KEY': JSON.stringify(process.env.WEATHERSTACK_API_KEY),
-        
-      }
-    }),
+      new webpack.DefinePlugin({
+        "process.env": {
+          MAPBOX_API_KEY: JSON.stringify(process.env.MAPBOX_API_KEY),
+          BUCKET_SLUG: JSON.stringify(process.env.BUCKET_SLUG),
+          READ_KEY: JSON.stringify(process.env.READ_KEY),
+          RAPID_API_KEY: JSON.stringify(process.env.RAPID_API_KEY),
+          WEATHERSTACK_API_KEY: JSON.stringify(
+            process.env.WEATHERSTACK_API_KEY
+          ),
+        },
+      }),
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         filename: "index.html",
